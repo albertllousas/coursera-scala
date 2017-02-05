@@ -1,4 +1,4 @@
-package coursera.fundesigninscala.week1
+package coursera.fundesigninscala.week1.monads
 
 import org.scalatest._
 

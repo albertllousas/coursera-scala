@@ -1,4 +1,4 @@
-package coursera.fundesigninscala.week1
+package coursera.fundesigninscala.week1.monads
 
 import org.scalatest.{FunSuite, Matchers}
 
@@ -14,6 +14,8 @@ class MonadLawsInForComprehensionsTest extends FunSuite with Matchers {
     val f: Int => Option[Int] = x => Some(x + 1)
     val g: Int => Option[Int] = x => Some(x + 2)
     val value = 1
+
+    // when
     val nestedFor: Option[Int] = for {
       x <- monad
       y <- f(x)
