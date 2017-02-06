@@ -8,42 +8,47 @@ import org.scalatest.{FunSuite, Matchers}
   */
 class BasicGeneratorTest extends FunSuite with Matchers {
 
+  val integers = new BasicGenerator[Int] {
+    val rand = new scala.util.Random
 
+    def generate: Int = rand.nextInt
+  }
 
-  def executeNTimes[T](times:Int=100,expr: => T): Seq[T] = (1 to times).map(_ => expr)
+  val booleans = new BasicGenerator[Boolean] {
+    def generate: Boolean = integers.generate > 0
+  }
+
+  val pairs = new BasicGenerator[(Int, Int)] {
+    def generate: (Int, Int) = (integers.generate, integers.generate)
+  }
+
 
   test("random generator should generate random integers") {
 
     // when
-    val randomNumbers: Seq[Int] = executeNTimes(expr=BasicGenerator.integers.generate)
+    val randomNumbers: Seq[Int] = executeNTimes(expr = integers.generate)
 
     // then
-    checkRandomness(vals=randomNumbers) shouldBe true
+    checkRandomness(vals = randomNumbers) shouldBe true
   }
 
   test("random generator should generate random pairs") {
 
     // when
-    val randomPairs: Seq[(Int,Int)] = executeNTimes(expr=BasicGenerator.pairs.generate)
+    val randomPairs: Seq[(Int, Int)] = executeNTimes(expr = pairs.generate)
 
     // then
-    checkRandomness(vals=randomPairs) shouldBe true
+    checkRandomness(vals = randomPairs) shouldBe true
   }
 
   test("random generator should generate random booleans") {
 
     // when
-    val randomBooleans: Seq[Boolean] = executeNTimes(expr=BasicGenerator.booleans.generate)
+    val randomBooleans: Seq[Boolean] = executeNTimes(expr = booleans.generate)
 
     // then
-    checkRandomnessOfBooleans(vals=randomBooleans) shouldBe true
+    checkRandomnessOfSet(vals = randomBooleans, set = Set(true, false)) shouldBe true
   }
 
-  test("generator does not support for expressions") {
-
-    // then
-    "val booleans = executeNTimes(expr=BasicGenerator.booleans.generate)" should compile
-    "val booleans = for (x <- BasicGenerator.integers.generate) yield x > 0" shouldNot compile
-  }
 
 }
