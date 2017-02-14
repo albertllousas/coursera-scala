@@ -14,7 +14,7 @@ class PatternMatchingTest extends FunSuite with Matchers {
       "address" -> JObj(
         Map(
           "streetAddress" -> JStr("21 2nd Street"),
-          "state" -> JStr("NY"),
+          "currentState" -> JStr("NY"),
           "postalCode" -> JNum(10021)
         )
       )
@@ -28,7 +28,7 @@ class PatternMatchingTest extends FunSuite with Matchers {
     val result:String = JSON.show(data)
 
     // then
-    result should equal("{\"firstName\": \"John\", \"lastName\": \"Smith\", \"address\": {\"streetAddress\": \"21 2nd Street\", \"state\": \"NY\", \"postalCode\": 10021.0}}")
+    result should equal("{\"firstName\": \"John\", \"lastName\": \"Smith\", \"address\": {\"streetAddress\": \"21 2nd Street\", \"currentState\": \"NY\", \"postalCode\": 10021.0}}")
   }
 
 }
