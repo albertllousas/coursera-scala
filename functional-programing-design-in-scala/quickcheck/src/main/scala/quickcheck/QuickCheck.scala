@@ -5,6 +5,8 @@ import org.scalacheck.Gen._
 import org.scalacheck.Prop._
 import org.scalacheck._
 
+import scala.annotation.tailrec
+
 abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
 
   lazy val genHeap: Gen[H] = for {
@@ -54,7 +56,12 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
         case heap if isEmpty(heap) => accumulated
         case heap => findMin(heap) :: _toOrderedListFoldingRight(deleteMin(heap), accumulated)
       }
-      val xs = _toOrderedListFoldingRight(h, Nil)
+
+      def _toOrderedListFoldingLeft(currentHeap: H, accumulated: List[Int]): List[Int] = currentHeap match {
+        case heap if isEmpty(heap) => accumulated
+        case heap => _toOrderedListFoldingLeft(deleteMin(heap), accumulated ::: List(findMin(heap)))
+      }
+      val xs = _toOrderedListFoldingRight(h, List.empty)
       xs == xs.sorted
     }
 }
